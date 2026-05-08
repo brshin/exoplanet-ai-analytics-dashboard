@@ -2,6 +2,9 @@ import requests
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+from openai import OpenAI
+
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 st.title("NASA Exoplanet Dashboard")
 st.write("Hover over the dots to see the name of the planet!")
@@ -38,6 +41,32 @@ if response.status_code == 200:
         log_y=True,
         title="Planet Mass vs Orbital Period"
     )
+
+    selectedPlanet = st.selectbox("Select a planet to analyze:", df['pl_name'])
+
+    # Multiple planets with the same name - right now, the code is only retrieving the value of the FIRST planet with that name
+    selectedPlanetMass = df.loc[df['pl_name'] == selectedPlanet, 'pl_bmasse'].values[0]
+    print(selectedPlanetMass)
+
+    selectedPlanetOrbitalPeriod = df.loc[df['pl_name'] == selectedPlanet, 'pl_orbper'].values[0]
+    print(selectedPlanetOrbitalPeriod)
+
+    if st.button('Generate AI Analysis'):
+
+        with st.spinner("Connecting to AI..."):
+
+            prompt = f"Act as a NASA astrophysicist. I am analyzing exoplanet {selectedPlanet}. It has a mass of {selectedPlanetMass} Earth masses and an orbital period of {selectedPlanetOrbitalPeriod} days. Give me a 2-sentence scientific hypothesis of what its climate or environment might be like."
+
+            response = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[{"role": "user", "content": prompt}]
+            )
+            
+            aiSummary = response.choices[0].message.content
+            st.success(aiSummary)
+
+
+
 
     st.plotly_chart(fig)
 
