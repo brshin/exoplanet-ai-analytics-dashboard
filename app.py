@@ -29,11 +29,14 @@ if response.status_code == 200:
 
     print(df)
 
-    x_data = df['pl_bmasse']
-    y_data = df['pl_orbper']
+    dfUnique = df.drop_duplicates(subset='pl_name')
+    print(dfUnique)
+
+    x_data = dfUnique['pl_bmasse']
+    y_data = dfUnique['pl_orbper']
 
     fig = px.scatter(
-        df,
+        dfUnique,
         x='pl_bmasse',
         y='pl_orbper',
         hover_name='pl_name',
@@ -42,14 +45,24 @@ if response.status_code == 200:
         title="Planet Mass vs Orbital Period"
     )
 
-    selectedPlanet = st.selectbox("Select a planet to analyze:", df['pl_name'])
+    selectedPlanet = st.selectbox("Select a planet to analyze:", dfUnique['pl_name'])
 
-    # Multiple planets with the same name - right now, the code is only retrieving the value of the FIRST planet with that name
-    selectedPlanetMass = df.loc[df['pl_name'] == selectedPlanet, 'pl_bmasse'].values[0]
+    selectedPlanetMass = dfUnique.loc[dfUnique['pl_name'] == selectedPlanet, 'pl_bmasse'].values[0]
     print(selectedPlanetMass)
 
-    selectedPlanetOrbitalPeriod = df.loc[df['pl_name'] == selectedPlanet, 'pl_orbper'].values[0]
+    selectedPlanetOrbitalPeriod = dfUnique.loc[dfUnique['pl_name'] == selectedPlanet, 'pl_orbper'].values[0]
     print(selectedPlanetOrbitalPeriod)
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("Name", selectedPlanet)
+    
+    with col2:
+        st.metric("Mass (Earth Masses)", selectedPlanetMass)
+    
+    with col3:
+        st.metric("Orbital Period (Days)", selectedPlanetOrbitalPeriod)
 
     if st.button('Generate AI Analysis'):
 
