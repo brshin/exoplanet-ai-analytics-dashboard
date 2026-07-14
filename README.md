@@ -1,20 +1,20 @@
-# NASA Exoplanet AI Dashboard
+# Exoplanet AI Analytics Dashboard
 
-> A Python-based interactive web application that fetches live astronomical data and utilizes an LLM reasoning engine to generate dynamic astrophysical insights.
+> An interactive astrophysical analytics pipeline that interfaces with the NASA Exoplanet Archive API to process structured astronomical datasets and generate dynamic scientific hypotheses using an LLM reasoning engine.
 
-### **[Live Demo](https://exoplanet-pipeline.streamlit.app/)**
+### **[Live Application](https://exoplanet-pipeline.streamlit.app/)**
 
 ---
 
-## The Mission
+## Architecture & Mission
 
-Built to programmatically interface with the **NASA Exoplanet Archive API**, extracting JSON data on confirmed exoplanets and rendering a logarithmic distribution of planetary mass versus orbital periods.
+Built to programmatically ingest, clean, and visualize structured JSON payloads from the **NASA Exoplanet Archive API**. The application processes confirmed exoplanetary data to construct interactive logarithmic distributions comparing planetary mass against orbital periods.
 
-**AI Integration:** The dashboard features a dynamic Large Language Model (LLM) integration. When a user queries a specific exoplanet, the application captures its unique orbital parameters and injects them into the OpenAI API, generating real-time, context-aware scientific hypotheses about the planet's potential climate and environment based on its telemetry.
+**LLM Reasoning Engine:** The dashboard integrates a dynamic reasoning agent via the OpenAI API. When a user isolates a specific exoplanet, the application programmatically extracts its unique telemetry (e.g., mass, orbital flux) and utilizes structured prompt engineering to generate context-aware scientific hypotheses regarding the planet's atmospheric composition and environmental habitability.
 
-## Tech Stack
+## Technical Stack
 
-* **Backend & Data Pipeline:** Python, `requests`, `pandas`
-* **Interactive Visualization:** `plotly.express` *(with `matplotlib` utilized in standalone script)*
-* **AI / Reasoning Engine:** `openai` (OpenAI API)
-* **Web Deployment:** `streamlit`
+* **Data Ingestion & Backend Pipeline:** Python, `requests`, `pandas` (multi-indexing & data cleansing)
+* **Logarithmic Visualization:** `plotly.express` *(with `matplotlib` implemented for standalone statistical analysis)*
+* **Automated Reasoning Engine:** `openai` (OpenAI API with custom prompt construction)
+* **Cloud Deployment:** `streamlit` (Distributed runtime)
